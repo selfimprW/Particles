@@ -8,7 +8,6 @@
 ***/
 package com.sean.www.particles.util;
 
-import android.util.FloatMath;
 
 public class Geometry {                
     public static class Point {
