@@ -1,5 +1,3 @@
-
-
 precision mediump float;
 varying vec3 v_Color;
 varying float v_ElapsedTime;

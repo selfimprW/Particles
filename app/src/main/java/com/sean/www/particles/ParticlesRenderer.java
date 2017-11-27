@@ -3,6 +3,7 @@ package com.sean.www.particles;
 import android.content.Context;
 import android.graphics.Color;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 
 import com.sean.www.particles.objects.ParticleShooter;
 import com.sean.www.particles.objects.ParticleSystem;
@@ -52,6 +53,9 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+
+        Log.d(TAG,"onSurfaceCreated");
+
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         particleProgram = new ParticleShaderProgram(mContext);
         particleSystem = new ParticleSystem(10000);
@@ -81,6 +85,8 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
+        Log.d(TAG,"onSurfaceChanged");
+
         glViewport(0, 0, width, height);
 
         MatrixHelper.perspectiveM(projectionMatrix, 45, (float) width /
@@ -96,6 +102,8 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         glClear(GL_COLOR_BUFFER_BIT);
 
+        Log.d(TAG,"onDrawFrame");
+
         float currentTime = (System.nanoTime() - globalStartTime)/1000000000f;
 
         redParticleShoot.addParticles(particleSystem,currentTime,5);
@@ -103,5 +111,8 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
         blueParticleShoot.addParticles(particleSystem,currentTime,5);
 
         particleProgram.useProgram();
+        particleProgram.setUniforms(viewProjectionMatrix,currentTime);
+        particleSystem.bindData(particleProgram);
+        particleSystem.draw();
     }
 }

@@ -2,6 +2,7 @@ package com.sean.www.particles.programs;
 
 import android.content.Context;
 
+import com.sean.www.particles.util.LoggerConfig;
 import com.sean.www.particles.util.ShaderHelper;
 import com.sean.www.particles.util.TextResourceReader;
 
@@ -43,6 +44,8 @@ public class ShaderProgram {
                         .readTextFileFromResource(context, vertexShaderResourceId),
                 TextResourceReader
                         .readTextFileFromResource(context, fragmentShaderResourceId));
+
+
     }
 
     public void useProgram() {
