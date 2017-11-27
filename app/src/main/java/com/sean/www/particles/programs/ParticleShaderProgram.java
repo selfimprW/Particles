@@ -4,9 +4,14 @@ import android.content.Context;
 
 import com.sean.www.particles.R;
 
+import static android.opengl.GLES20.GL_TEXTURE0;
+import static android.opengl.GLES20.GL_TEXTURE_2D;
+import static android.opengl.GLES20.glActiveTexture;
+import static android.opengl.GLES20.glBindTexture;
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
 import static android.opengl.GLES20.glUniform1f;
+import static android.opengl.GLES20.glUniform1i;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 
 /**
@@ -22,6 +27,7 @@ public class ParticleShaderProgram extends ShaderProgram {
     //Uniform location
     private final int uMatrixLocation;
     private final int uTimeLocation;
+    private final int uTextureUnitLocation;
 
     //Attribute location
     private final int aPositionLocation;
@@ -36,6 +42,7 @@ public class ParticleShaderProgram extends ShaderProgram {
         //获取uniform位置
         uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
         uTimeLocation = glGetUniformLocation(program, U_TIME);
+        uTextureUnitLocation = glGetUniformLocation(program,U_TEXTURE_UNIT);
 
         //获取属性位置
         aPositionLocation = glGetAttribLocation(program, A_POSITION);
@@ -50,11 +57,16 @@ public class ParticleShaderProgram extends ShaderProgram {
      * @param matrix 数组矩阵
      * @param elapsedTime 消逝的时间
      */
-    public void setUniforms(float[] matrix,float elapsedTime){
+    public void setUniforms(float[] matrix,float elapsedTime,int textureId){
 
         //上传矩阵数据
         glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
         glUniform1f(uTimeLocation, elapsedTime);
+
+        //添加纹理
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D,textureId);
+        glUniform1i(uTextureUnitLocation,0);
     }
 
     public int getPositionLocation(){

@@ -10,6 +10,7 @@ import com.sean.www.particles.objects.ParticleSystem;
 import com.sean.www.particles.programs.ParticleShaderProgram;
 import com.sean.www.particles.util.Geometry;
 import com.sean.www.particles.util.MatrixHelper;
+import com.sean.www.particles.util.TextureHelper;
 
 import java.util.Random;
 
@@ -56,6 +57,8 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
     final float angleVarianceInDegrees = 5f;
     final float speedVariance = 1f;
 
+    private int texture;
+
     public ParticlesRenderer(Context context) {
         mContext = context;
     }
@@ -99,6 +102,9 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
                 angleVarianceInDegrees,
                 speedVariance
         );
+
+        texture = TextureHelper.loadTexture(mContext,R.drawable.particle_texture);
+        //Log.d(TAG,""+texture);
     }
 
     @Override
@@ -130,7 +136,7 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
         blueParticleShoot.addParticles(particleSystem,currentTime,5);
 
         particleProgram.useProgram();
-        particleProgram.setUniforms(viewProjectionMatrix,currentTime);
+        particleProgram.setUniforms(viewProjectionMatrix,currentTime,texture);
         particleSystem.bindData(particleProgram);
         particleSystem.draw();
     }
