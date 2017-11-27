@@ -47,6 +47,6 @@ public class ParticleSystem {
      * @param direction 向量
      */
     public void addParticle(Geometry.Point position,int color,Geometry.Vector direction){
-        
+
     }
 }
