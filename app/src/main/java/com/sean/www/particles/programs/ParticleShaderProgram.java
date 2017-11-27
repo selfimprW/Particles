@@ -15,6 +15,8 @@ import static android.opengl.GLES20.glUniformMatrix4fv;
  * author: machenshuang
  * <p>
  * Date: 2017-11-23 16:22
+ *
+ * <p>粒子着色器程序</p>
  */
 
 public class ParticleShaderProgram extends ShaderProgram {

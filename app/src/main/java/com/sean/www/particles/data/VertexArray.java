@@ -37,10 +37,12 @@ public class VertexArray {
         
         floatBuffer.position(0);
     }
-    
+
     /**
-     * Updates the float buffer with the specified vertex data, assuming that
-     * the vertex data and the float buffer are the same size.
+     * 复制数据到floatBuffer(本地内存)
+     * @param vertexData 目标数组
+     * @param start 偏移起始位
+     * @param count 数量
      */
     public void updateBuffer(float[] vertexData, int start, int count) {
        floatBuffer.position(start);

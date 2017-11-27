@@ -9,6 +9,8 @@ import com.sean.www.particles.util.TextResourceReader;
  * author: machenshuang
  * <p>
  * Date: 2017-11-23 16:17
+ *
+ * <p>渲染器程序</p>
  */
 
 public class ShaderProgram {

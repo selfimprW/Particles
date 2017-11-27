@@ -1,9 +1,13 @@
 package com.sean.www.particles.objects;
 
+import android.graphics.Color;
+
 import com.sean.www.particles.data.VertexArray;
 import com.sean.www.particles.programs.ParticleShaderProgram;
 import com.sean.www.particles.util.Geometry;
 
+import static android.opengl.GLES20.GL_POINTS;
+import static android.opengl.GLES20.glDrawArrays;
 import static com.sean.www.particles.Constants.BYTES_PER_FLOAT;
 
 /**
@@ -21,9 +25,9 @@ public class ParticleSystem {
 
     private static final int TOTAL_COMPONENT_COUNT =
             POSITION_COMPONENT_COUNT
-            + COLOR_COMPONENT_COUNT
-            + VECTOR_COMPONENT_COUNT
-            + PARTICLE_START_TIME_COMPONENT_COUNT;
+                    + COLOR_COMPONENT_COUNT
+                    + VECTOR_COMPONENT_COUNT
+                    + PARTICLE_START_TIME_COMPONENT_COUNT;
 
     private static final int STRIDE = TOTAL_COMPONENT_COUNT * BYTES_PER_FLOAT;
 
@@ -34,7 +38,7 @@ public class ParticleSystem {
     private int currentParticleCount;
     private int nextParticle;
 
-    public ParticleSystem(int maxParticleCount){
+    public ParticleSystem(int maxParticleCount) {
         particles = new float[maxParticleCount * TOTAL_COMPONENT_COUNT];
         vertexArray = new VertexArray(particles);
         this.maxParticleCount = maxParticleCount;
@@ -42,11 +46,74 @@ public class ParticleSystem {
 
     /**
      * 添加粒子
-     * @param position 三维中的位置
-     * @param color 颜色
-     * @param direction 向量
+     *
+     * @param position          三维中的位置
+     * @param color             颜色
+     * @param direction         向量
+     * @param particleStartTime 粒子起始时间
      */
-    public void addParticle(Geometry.Point position,int color,Geometry.Vector direction){
+    public void addParticle(Geometry.Point position, int color, Geometry.Vector direction,
+                            float particleStartTime) {
+        final int particleOffset = nextParticle * TOTAL_COMPONENT_COUNT;
 
+        int currentOffset = particleOffset;
+        nextParticle++;
+
+        if (currentOffset < maxParticleCount) {
+            currentParticleCount++;
+        }
+
+        if (nextParticle == maxParticleCount) {
+            nextParticle = 0;
+        }
+
+        particles[currentOffset++] = position.x;
+        particles[currentOffset++] = position.y;
+        particles[currentOffset++] = position.z;
+
+        particles[currentOffset++] = Color.red(color) / 255f;
+        particles[currentOffset++] = Color.green(color) / 255f;
+        particles[currentOffset++] = Color.blue(color) / 255f;
+
+        particles[currentOffset++] = direction.x;
+        particles[currentOffset++] = direction.y;
+        particles[currentOffset++] = direction.z;
+
+        particles[currentOffset++] = particleStartTime;
+
+        //将粒子复制到本地缓冲区
+        vertexArray.updateBuffer(particles, particleOffset, TOTAL_COMPONENT_COUNT);
     }
+
+    /**
+     * <p>粒子系统数据同粒子着色器程序绑定</p>
+     *
+     * @param particleProgram 粒子着色器程序
+     */
+    public void bindData(ParticleShaderProgram particleProgram) {
+        int dataOffset = 0;
+        vertexArray.setVertexAttribPointer(dataOffset,
+                particleProgram.getPositionLocation(),
+                POSITION_COMPONENT_COUNT, STRIDE);
+        dataOffset += POSITION_COMPONENT_COUNT;
+
+        vertexArray.setVertexAttribPointer(dataOffset,
+                particleProgram.getColorLocation(),
+                COLOR_COMPONENT_COUNT, STRIDE);
+        dataOffset += COLOR_COMPONENT_COUNT;
+
+        vertexArray.setVertexAttribPointer(dataOffset,
+                particleProgram.getDirectionVectorLocation(),
+                VECTOR_COMPONENT_COUNT, STRIDE);
+        dataOffset += VECTOR_COMPONENT_COUNT;
+
+        vertexArray.setVertexAttribPointer(dataOffset,
+                particleProgram.getParticleStartTimeLocation(),
+                PARTICLE_START_TIME_COMPONENT_COUNT, STRIDE);
+    }
+
+    public void draw() {
+        glDrawArrays(GL_POINTS, 0, currentParticleCount);
+    }
+
 }
