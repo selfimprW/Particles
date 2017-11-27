@@ -5,6 +5,8 @@ import android.content.Context;
 import com.sean.www.particles.util.ShaderHelper;
 import com.sean.www.particles.util.TextResourceReader;
 
+import static android.opengl.GLES20.glUseProgram;
+
 /**
  * author: machenshuang
  * <p>
@@ -41,5 +43,10 @@ public class ShaderProgram {
                         .readTextFileFromResource(context, vertexShaderResourceId),
                 TextResourceReader
                         .readTextFileFromResource(context, fragmentShaderResourceId));
+    }
+
+    public void useProgram() {
+        // Set the current OpenGL shader program to this program.
+        glUseProgram(program);
     }
 }
