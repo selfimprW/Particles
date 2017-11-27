@@ -11,6 +11,8 @@ import com.sean.www.particles.programs.ParticleShaderProgram;
 import com.sean.www.particles.util.Geometry;
 import com.sean.www.particles.util.MatrixHelper;
 
+import java.util.Random;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -47,6 +49,9 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
     private ParticleShooter blueParticleShoot;
     private long globalStartTime;
 
+    final float angleVarianceInDegrees = 5f;
+    final float speedVariance = 1f;
+
     public ParticlesRenderer(Context context) {
         mContext = context;
     }
@@ -58,7 +63,7 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
 
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         particleProgram = new ParticleShaderProgram(mContext);
-        particleSystem = new ParticleSystem(10000);
+        particleSystem = new ParticleSystem(1000000);
         globalStartTime = System.nanoTime();
 
         final Geometry.Vector particleDirection = new Geometry.Vector(0f, 0.5f, 0f);
@@ -66,19 +71,25 @@ public class ParticlesRenderer implements GLSurfaceView.Renderer {
         redParticleShoot = new ParticleShooter(
                 new Geometry.Point(-1f, 0f, 0f),
                 particleDirection,
-                Color.rgb(255, 50, 5)
+                Color.rgb(255, 50, 5),
+                angleVarianceInDegrees,
+                speedVariance
         );
 
         greenParticleShoot = new ParticleShooter(
                 new Geometry.Point(0f, 0f, 0f),
                 particleDirection,
-                Color.rgb(25, 255, 25)
+                Color.rgb(25, 255, 25),
+                angleVarianceInDegrees,
+                speedVariance
         );
 
         blueParticleShoot = new ParticleShooter(
                 new Geometry.Point(1f, 0f, 0f),
                 particleDirection,
-                Color.rgb(5, 50, 255)
+                Color.rgb(5, 50, 255),
+                angleVarianceInDegrees,
+                speedVariance
         );
     }
 

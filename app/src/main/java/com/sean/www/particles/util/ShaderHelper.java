@@ -176,7 +176,7 @@ public class ShaderHelper {
         int vertexShader = compileVertexShader(vertexShaderSource);
         int fragmentShader = compileFragmentShader(fragmentShaderSource);
 
-        Log.d(TAG," "+vertexShader+","+fragmentShader);
+        //Log.d(TAG," "+vertexShader+","+fragmentShader);
 
         // Link them into a shader program.
         program = linkProgram(vertexShader, fragmentShader);
