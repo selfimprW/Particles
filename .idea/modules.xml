@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Particles2.iml" filepath="$PROJECT_DIR$/Particles2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Particles.iml" filepath="$PROJECT_DIR$/Particles.iml" />
+      <module fileurl="file://D:\AndroidProject\Particles\Particles2.iml" filepath="D:\AndroidProject\Particles\Particles2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\AndroidProject\Particles\app\app.iml" filepath="D:\AndroidProject\Particles\app\app.iml" />
     </modules>
   </component>
 </project>
